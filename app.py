@@ -19,7 +19,10 @@ API_URL = 'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_K
 if st.button('Fetch Weather Data'):
     response = requests.get(API_URL.format(city=city, API_KEY=API_KEY))
     data = response.json()
-    print(data)
+    if data['cod'] == 200:
+     st.success('Weather data fetched successfully!')
+    else:
+        st.error('City not found. Please enter a valid city name.') 
 
     #Extract the values 
     temperature = data['main']['temp']
@@ -40,7 +43,4 @@ if st.button('Fetch Weather Data'):
     col2.metric('Humidity', f'💦{humidity} %')
     col3.metric('Wind Speed', f'🍃{wind_speed} m/s')
     col4.metric('Weather', f'☁️{weather}')
-if data['cod'] != 200:
-     st.success('Weather Data Fetched Successfully')
-else:
-    st.error('Invalid City Name')
+
